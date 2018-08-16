@@ -38,6 +38,8 @@ h1 {
 @media only screen and (max-width: 700px) {
     .card{
         box-shadow: none;
+        margin: 0;
+        margin-bottom: 50px;
     }
     .main-container {
         padding: 0;
