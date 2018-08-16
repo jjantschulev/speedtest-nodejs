@@ -2,7 +2,7 @@ const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep
 var socket;
 
 function onload() {
-    socket = io('localhost:3001');
+    socket = io(window.location.href);
     var chart = document.getElementById('chart');
     socket.on('initChartData', (todayChartData) => {
         var downloads = [];
