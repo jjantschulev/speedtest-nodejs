@@ -2,12 +2,31 @@ const databaseConfig = require("./config.js");
 const mysql = require("mysql");
 const speedtest = require("speedtest-net");
 const schedule = require("node-schedule");
+const express = require("express");
+const app = express();
+const server = app.listen(3001, () => { console.log('Speetest server running on port 3001'); });
+app.use(express.static("public"));
+const io = require('socket.io')(server);
 
+
+// SOCKET.IO COMMUNICATION
+
+io.on('connection', (socket) => {
+    // Get data from server;
+    conn.query("SELECT ping, upload, download, time FROM tests ORDER BY time LIMIT 24", (err, data) => {
+        if (err) throw err;
+        socket.emit('initChartData', data);
+    });
+})
+
+
+// CONNECTION TO DATABASE
 var conn = mysql.createConnection(databaseConfig.DB_CONFIG);
 conn.connect((err) => {
     if (err) throw err;
 });
 
+// SCHEDULE SPEEDTEST TASK
 schedule.scheduleJob("DoSpeedTest", " 0 */2 * * *", () => {
     var test = speedtest({ maxTime: 5000 });
     test.on('data', data => {
@@ -17,7 +36,7 @@ schedule.scheduleJob("DoSpeedTest", " 0 */2 * * *", () => {
             download: data.speeds.download,
             ping: data.server.ping
         }
-        conn.query("INSERT INTO posts SET ?", dataToInsert, (err) => {
+        conn.query("INSERT INTO tests SET ?", dataToInsert, (err) => {
             if (err) throw err;
         });
     });
