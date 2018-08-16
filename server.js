@@ -27,7 +27,7 @@ conn.connect((err) => {
 });
 
 // SCHEDULE SPEEDTEST TASK
-schedule.scheduleJob("DoSpeedTest", " 0 */2 * * *", () => {
+schedule.scheduleJob("DoSpeedTest", " 0 * * * *", () => {
     var test = speedtest({ maxTime: 5000 });
     test.on('data', data => {
         // Gotten Data Object must insert into database
