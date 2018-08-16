@@ -1,0 +1,16 @@
+{
+  "name": "speedtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jordan Jantschulev <j.jantschulev@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "mysql": "^2.16.0",
+    "node-schedule": "^1.3.0",
+    "speedtest-net": "^1.4.3"
+  }
+}
