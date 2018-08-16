@@ -3,14 +3,15 @@ var socket;
 
 function onload() {
     socket = io(window.location.href);
-    var chart = document.getElementById('chart');
     socket.on('initChartData', (todayChartData) => {
         var downloads = [];
         var uploads = [];
         var labels = [];
+        var pings = [];
         todayChartData.forEach(element => {
             downloads.push(element.download);
             uploads.push(element.upload);
+            pings.push(element.ping);
             var date = new Date(Date.parse(element.time));
             var dayName = date.toString().split(' ')[0];
             // labels.push(monthNames[date.getMonth() - 1] + " " + date.getDay() + ", " + date.getHours() + ":" + date.getMinutes());
@@ -18,7 +19,7 @@ function onload() {
 
         });
 
-        chart = new Chart(chart, {
+        uploadDownloadChart = new Chart(document.getElementById('uploadDownloadChart'), {
             type: 'line',
             data: {
                 labels: labels,
@@ -35,6 +36,19 @@ function onload() {
                 }]
             },
         });
+
+        pingChart = new Chart('pingChart', {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Ping",
+                    backgroundColor: 'rgba(255, 200, 0,0)',
+                    borderColor: 'rgb(255, 200, 0)',
+                    data: pings,
+                }]
+            },
+        })
     })
 
 }
