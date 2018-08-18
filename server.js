@@ -4,7 +4,7 @@ const speedtest = require("speedtest-net");
 const schedule = require("node-schedule");
 const express = require("express");
 const app = express();
-const server = app.listen(3001, () => { console.log('Speetest server running on port 3001'); });
+const server = app.listen(3001, () => { console.log('Speedtest server running on port 3001'); });
 app.use(express.static("public"));
 const io = require('socket.io')(server);
 
@@ -13,7 +13,7 @@ const io = require('socket.io')(server);
 
 io.on('connection', (socket) => {
     // Get data from server;
-    conn.query("SELECT ping, upload, download, time FROM tests ORDER BY time LIMIT 24", (err, data) => {
+    conn.query("SELECT * FROM (SELECT ping, upload, download, time FROM tests ORDER BY time DESC LIMIT 24) as foo ORDER BY foo.time ASC", (err, data) => {
         if (err) throw err;
         socket.emit('initChartData', data);
     });
